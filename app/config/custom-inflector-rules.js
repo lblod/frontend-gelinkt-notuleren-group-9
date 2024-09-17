@@ -82,3 +82,12 @@ inflector.irregular(
   'installatievergadering-synchronization-status',
   'installatievergadering-synchronization-statuses',
 );
+
+// Hackathon
+inflector.irregular('case', 'cases');
+inflector.irregular('event', 'events');
+inflector.irregular('submission', 'submissions');
+inflector.irregular('identificator', 'identificatoren');
+inflector.irregular('location', 'locations');
+inflector.irregular('timeframe', 'timeframes');
+inflector.irregular('organization', 'organizations');
