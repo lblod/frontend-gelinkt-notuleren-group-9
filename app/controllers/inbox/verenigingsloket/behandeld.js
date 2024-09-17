@@ -21,12 +21,16 @@ export default class VerenigingsloketBehandeldController extends Controller {
     return this.store.query('submission', {
       filter: {
         ':has-no:editor-document': false,
-        title: this.filter,
         'editor-document': {
           'document-container': {
             status: {
               ':id:': PUBLISHED_STATUS_ID,
             },
+          },
+        },
+        case: {
+          event: {
+            description: this.filter,
           },
         },
       },

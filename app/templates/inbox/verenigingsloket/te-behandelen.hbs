@@ -25,9 +25,9 @@
   <table.content as |c|>
     <c.header>
       <AuDataTableThSortable
-        @field=':no-case:case.event.title'
+        @field=':no-case:case.event.description'
         @currentSorting={{this.sort}}
-        @label='Titel'
+        @label='Beschrijving'
       />
       <AuDataTableThSortable
         @field=':no-case:applicant.name'
@@ -44,7 +44,7 @@
     <c.body as |submission|>
       <td>
         <AuLink @skin='primary'>
-          {{submission.case.event.title}}
+          {{submission.case.event.description}}
         </AuLink>
       </td>
       <td>
