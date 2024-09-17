@@ -1,0 +1,68 @@
+<AuDataTable
+  @content={{this.data.value}}
+  @isLoading={{or this.updateFilter.isRunning this.data.isLoading}}
+  @noDataMessage='Geen aanvragen gevonden'
+  @sort={{this.sort}}
+  @page={{this.page}}
+  @size={{this.pageSize}}
+  as |table|
+>
+  <table.menu as |menu|>
+    <menu.general>
+      <AuToolbar class='au-o-box' @size='large' as |Group|>
+        <Group class='au-c-toolbar__group--center au-u-hide-on-print'>
+          <AuInput
+            @icon='search'
+            @iconAlignment='right'
+            value={{this.filter}}
+            placeholder='Zoek op titel aanvraag'
+            {{on 'input' (perform this.updateFilter)}}
+          />
+        </Group>
+      </AuToolbar>
+    </menu.general>
+  </table.menu>
+  <table.content as |c|>
+    <c.header>
+      <AuDataTableThSortable
+        @field=':no-case:case.event.description'
+        @currentSorting={{this.sort}}
+        @label='Beschrijving'
+      />
+      <AuDataTableThSortable
+        @field=':no-case:applicant.name'
+        @currentSorting={{this.sort}}
+        @label='Organisator'
+      />
+      <AuDataTableThSortable
+        @field='date'
+        @currentSorting={{this.sort}}
+        @label='Aangemaakt op'
+      />
+      <AuDataTableThSortable
+        @field=':no-case:editorDocument.title'
+        @currentSorting={{this.sort}}
+        @label='Agendapunt'
+      />
+    </c.header>
+    <c.body as |submission|>
+      <td>
+        <AuLink @skin='primary'>
+          {{submission.case.event.description}}
+        </AuLink>
+      </td>
+      <td>
+        {{submission.applicant.name}}
+      </td>
+      <td>
+        {{detailed-date submission.date}}
+      </td>
+      <td>
+        <AgendaPuntLink
+          @documentContainer={{submission.editorDocument.documentContainer}}
+          @readOnly={{false}}
+        />
+      </td>
+    </c.body>
+  </table.content>
+</AuDataTable>
