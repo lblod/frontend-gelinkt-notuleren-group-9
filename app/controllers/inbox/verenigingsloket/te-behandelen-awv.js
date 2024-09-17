@@ -14,7 +14,7 @@ export default class VerenigingsloketTeBehandelenAWVController extends Controlle
   @tracked filter;
   @tracked page = 0;
   @tracked pageSize = 10;
-  @tracked sort = '-created-on';
+  @tracked sort = '-date';
 
   data = trackedFunction(this, async () => {
     // TODO: adjust this query

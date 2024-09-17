@@ -15,7 +15,7 @@ export default class VerenigingsloketBehandeldController extends Controller {
   @tracked filter;
   @tracked page = 0;
   @tracked pageSize = 10;
-  @tracked sort = '-created-on';
+  @tracked sort = '-date';
 
   data = trackedFunction(this, async () => {
     return this.store.query('submission', {
