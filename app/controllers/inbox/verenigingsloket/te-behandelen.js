@@ -7,7 +7,6 @@ import { restartableTask, timeout } from 'ember-concurrency';
 const SEARCH_DEBOUNCE_MS = 300;
 
 export default class VerenigingsloketTeBehandelenController extends Controller {
-  @service verenigingsloket;
   @service store;
 
   queryParams = ['filter', 'page', 'pageSize', 'sort'];
@@ -35,11 +34,6 @@ export default class VerenigingsloketTeBehandelenController extends Controller {
       },
       include: ['applicant', 'case', 'case.event'].join(','),
     });
-    const result = await this.verenigingsloket.fetch.perform({
-      title: this.filter,
-      status: 'te-behandelen',
-    });
-    return result;
   });
 
   updateFilter = restartableTask(async (event) => {

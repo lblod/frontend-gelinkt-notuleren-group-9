@@ -8,7 +8,6 @@ import { PUBLISHED_STATUS_ID } from '../../../utils/constants';
 const SEARCH_DEBOUNCE_MS = 300;
 
 export default class VerenigingsloketBehandeldController extends Controller {
-  @service verenigingsloket;
   @service store;
 
   queryParams = ['filter', 'page', 'pageSize', 'sort'];
@@ -43,11 +42,6 @@ export default class VerenigingsloketBehandeldController extends Controller {
       },
       include: ['applicant', 'case', 'case.event', 'editor-document'].join(','),
     });
-    const result = await this.verenigingsloket.fetch.perform({
-      title: this.filter,
-      status: 'behandeld',
-    });
-    return result;
   });
 
   updateFilter = restartableTask(async (event) => {
