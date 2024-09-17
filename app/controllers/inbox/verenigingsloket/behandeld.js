@@ -22,7 +22,13 @@ export default class VerenigingsloketBehandeldController extends Controller {
       filter: {
         ':has-no:editor-document': false,
         title: this.filter,
-        'editor-document.document-container.status:id:': PUBLISHED_STATUS_ID,
+        'editor-document': {
+          'document-container': {
+            status: {
+              ':id:': PUBLISHED_STATUS_ID,
+            },
+          },
+        },
       },
       sort: this.sort,
       page: {

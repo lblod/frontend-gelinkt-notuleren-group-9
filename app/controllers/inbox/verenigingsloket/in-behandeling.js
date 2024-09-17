@@ -24,10 +24,13 @@ export default class VerenigingsloketInBehandelingController extends Controller 
       filter: {
         ':has-no:editor-document': false,
         title: this.filter,
-        'editor-document.document-container.status:id:': [
-          DRAFT_STATUS_ID,
-          PLANNED_STATUS_ID,
-        ].join(','),
+        'editor-document': {
+          'document-container': {
+            status: {
+              ':id:': [DRAFT_STATUS_ID, PLANNED_STATUS_ID].join(','),
+            },
+          },
+        },
       },
       sort: this.sort,
       page: {
