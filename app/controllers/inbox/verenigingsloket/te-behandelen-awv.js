@@ -21,11 +21,13 @@ export default class VerenigingsloketTeBehandelenAWVController extends Controlle
     return this.store.query('submission', {
       filter: {
         ':has-no:editor-document': true,
-        case: {
-          event: {
-            description: this.filter,
+        ...(this.filter && {
+          case: {
+            event: {
+              description: this.filter,
+            },
           },
-        },
+        }),
       },
       sort: this.sort,
       page: {

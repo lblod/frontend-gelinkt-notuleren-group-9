@@ -28,11 +28,13 @@ export default class VerenigingsloketBehandeldController extends Controller {
             },
           },
         },
-        case: {
-          event: {
-            description: this.filter,
+        ...(this.filter && {
+          case: {
+            event: {
+              description: this.filter,
+            },
           },
-        },
+        }),
       },
       sort: this.sort,
       page: {

@@ -30,11 +30,13 @@ export default class VerenigingsloketInBehandelingController extends Controller 
             },
           },
         },
-        case: {
-          event: {
-            description: this.filter,
+        ...(this.filter && {
+          case: {
+            event: {
+              description: this.filter,
+            },
           },
-        },
+        }),
       },
       sort: this.sort,
       page: {
