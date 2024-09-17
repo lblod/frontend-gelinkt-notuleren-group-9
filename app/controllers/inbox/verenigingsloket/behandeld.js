@@ -9,6 +9,7 @@ const SEARCH_DEBOUNCE_MS = 300;
 
 export default class VerenigingsloketBehandeldController extends Controller {
   @service verenigingsloket;
+  @service store;
 
   queryParams = ['filter', 'page', 'pageSize', 'sort'];
   @tracked filter;

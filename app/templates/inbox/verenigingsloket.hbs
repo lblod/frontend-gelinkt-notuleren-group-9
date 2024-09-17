@@ -11,7 +11,9 @@
       @route='inbox.verenigingsloket.te-behandelen'
     >
       Te behandelen
-      <AuBadge @number={{4}} @size='small' />
+      {{#if this.newSubmissionCount.value}}
+        <AuBadge @number={{this.newSubmissionCount.value}} @size='small' />
+      {{/if}}
     </AuLink>
   </Tab>
   <Tab>
@@ -28,11 +30,11 @@
       Behandeld
     </AuLink>
   </Tab>
-  <Tab>
+  {{!-- <Tab>
     <AuLink @route='inbox.verenigingsloket.te-behandelen-awv'>
       Door te sturen naar AWV
       <AuBadge @number={{2}} @size='small' />
     </AuLink>
-  </Tab>
+  </Tab> --}}
 </AuTabs>
 {{outlet}}
