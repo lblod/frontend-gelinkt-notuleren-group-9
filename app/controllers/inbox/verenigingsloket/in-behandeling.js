@@ -3,7 +3,10 @@ import { tracked } from '@glimmer/tracking';
 import { trackedFunction } from 'ember-resources/util/function';
 import { service } from '@ember/service';
 import { restartableTask, timeout } from 'ember-concurrency';
-
+import {
+  DRAFT_STATUS_ID,
+  PLANNED_STATUS_ID,
+} from 'frontend-gelinkt-notuleren/utils/constants';
 const SEARCH_DEBOUNCE_MS = 300;
 
 export default class VerenigingsloketInBehandelingController extends Controller {
@@ -16,17 +19,22 @@ export default class VerenigingsloketInBehandelingController extends Controller 
   @tracked sort = '-created-on';
 
   data = trackedFunction(this, async () => {
-    // return this.store.query('aanvraag-verenigingsloket', {
-    //   filter: {
-    //     ':exact:status': 'in-behandeling',
-    //     title: this.filter,
-    //   },
-    //   sort: this.sort,
-    //   page: {
-    //     number: this.page,
-    //     size: this.pageSize,
-    //   },
-    // });
+    return this.store.query('submission', {
+      filter: {
+        ':has-no:editor-document': false,
+        title: this.filter,
+        'editor-document.document-container.status:id:': [
+          DRAFT_STATUS_ID,
+          PLANNED_STATUS_ID,
+        ].join(','),
+      },
+      sort: this.sort,
+      page: {
+        number: this.page,
+        size: this.pageSize,
+      },
+      include: ['applicant', 'case', 'case.event', 'editor-document'].join(','),
+    });
     const result = await this.verenigingsloket.fetch.perform({
       title: this.filter,
       status: 'in-behandeling',

@@ -16,17 +16,19 @@ export default class VerenigingsloketTeBehandelenAWVController extends Controlle
   @tracked sort = '-created-on';
 
   data = trackedFunction(this, async () => {
-    // return this.store.query('aanvraag-verenigingsloket', {
-    //   filter: {
-    //     ':exact:status': 'te-behandelen-awv',
-    //     title: this.filter,
-    //   },
-    //   sort: this.sort,
-    //   page: {
-    //     number: this.page,
-    //     size: this.pageSize,
-    //   },
-    // });
+    // TODO: adjust this query
+    return this.store.query('submission', {
+      filter: {
+        ':has-no:editor-document': true,
+        title: this.filter,
+      },
+      sort: this.sort,
+      page: {
+        number: this.page,
+        size: this.pageSize,
+      },
+      include: ['applicant', 'case', 'case.event'].join(','),
+    });
     const result = await this.verenigingsloket.fetch.perform({
       title: this.filter,
       status: 'te-behandelen',
