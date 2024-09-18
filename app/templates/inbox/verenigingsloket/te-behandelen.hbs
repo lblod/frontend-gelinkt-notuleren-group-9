@@ -39,6 +39,11 @@
         @currentSorting={{this.sort}}
         @label='Aangemaakt op'
       />
+      <AuDataTableThSortable
+        @field='date'
+        @currentSorting={{this.sort}}
+        @label='Tijd tot event'
+      />
       <th></th>
     </c.header>
     <c.body as |submission|>
@@ -52,6 +57,9 @@
       </td>
       <td>
         {{detailed-date submission.date}}
+      </td>
+      <td>
+        {{await (this.timeTillEvent submission)}}
       </td>
       <td>
         <AuButton

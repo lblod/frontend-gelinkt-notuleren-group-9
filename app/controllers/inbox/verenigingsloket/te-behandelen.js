@@ -39,7 +39,12 @@ export default class VerenigingsloketTeBehandelenController extends Controller {
         number: this.page,
         size: this.pageSize,
       },
-      include: ['applicant', 'case', 'case.event'].join(','),
+      include: [
+        'applicant',
+        'case',
+        'case.event',
+        'case.event.timeframes',
+      ].join(','),
     });
   });
 
@@ -48,6 +53,19 @@ export default class VerenigingsloketTeBehandelenController extends Controller {
     await timeout(SEARCH_DEBOUNCE_MS);
     this.filter = value;
   });
+
+  timeTillEvent = async (submission) => {
+    const t = await submission.case.get('event').get('timeframes');
+    if (t.slice().length > 0) {
+      const start = t.slice()[0].start;
+      const today = new Date();
+      const difference = start.getTime() - today.getTime();
+      let days = Math.round(difference / (1000 * 3600 * 24));
+      return `${days} dagen`;
+    } else {
+      return '';
+    }
+  };
 
   @action
   async createAgendapoint(submission) {
