@@ -118,7 +118,7 @@ export default class VerenigingsloketTeBehandelenController extends Controller {
             ${locationsHTML}
             <p>Voor de organisatie van ${event.description}.</p>
             <p>Van ${dateHtml(timeframe.start)} tot ${dateHtml(timeframe.end)}</p>
-            <p>Door ${applicant.name}</p>
+            <p>Door ${applicant?.name}</p>
           </div>
           <p><br></p>
           <div
