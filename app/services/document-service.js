@@ -82,6 +82,29 @@ export default class DocumentService extends Service {
     return documentpartUris;
   }
 
+  extractSubmissions(editorDocument) {
+    const triples = this.extractTriplesFromDocument(editorDocument);
+    const decisionUris = triples
+      .filter(
+        (triple) =>
+          (triple.predicate ===
+            'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' ||
+            triple.predicate === 'a') &&
+          triple.object === 'http://data.vlaanderen.be/ns/besluit#Besluit',
+      )
+      .map((triple) => triple.subject);
+    const submissionUris = triples
+      .filter((triple) => {
+        return (
+          decisionUris.includes(triple.subject) &&
+          triple.predicate ===
+            'https://data.vlaanderen.be/ns/omgevingsvergunning#voorwerp'
+        );
+      })
+      .map((triple) => triple.object);
+    return submissionUris;
+  }
+
   createEditorDocument = task(
     async (title, content, documentContainer, previousDocument) => {
       if (!title || !documentContainer) {
@@ -100,6 +123,24 @@ export default class DocumentService extends Service {
         editorDocument.documentContainer = documentContainer;
         editorDocument.parts = await this.retrieveDocumentParts(editorDocument);
         await editorDocument.save();
+        if (previousDocument) {
+          const previousSubmissions =
+            await this.retrieveSubmissions(previousDocument);
+          await Promise.all(
+            previousSubmissions.map(async (submission) => {
+              submission.documentContainer = null;
+              await submission.save();
+            }),
+          );
+        }
+        const submissions = await this.retrieveSubmissions(editorDocument);
+
+        await Promise.all(
+          submissions.map(async (submission) => {
+            submission.documentContainer = documentContainer;
+            await submission.save();
+          }),
+        );
         documentContainer.currentVersion = editorDocument;
         await documentContainer.save();
         return editorDocument;
@@ -117,6 +158,20 @@ export default class DocumentService extends Service {
           })
         ).firstObject;
         return part;
+      }),
+    );
+  }
+
+  async retrieveSubmissions(editorDocument) {
+    return Promise.all(
+      this.extractSubmissions(editorDocument).map(async (submissionUri) => {
+        const submission = (
+          await this.store.query('submission', {
+            'filter[:uri:]': submissionUri,
+            include: 'document-container',
+          })
+        ).firstObject;
+        return submission;
       }),
     );
   }

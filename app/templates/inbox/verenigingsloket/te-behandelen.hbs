@@ -44,7 +44,7 @@
     <c.body as |submission|>
       <td>
         <AuLink @skin='primary'>
-          {{submission.case.event.description}}
+          {{limit-content submission.case.event.description 80}}
         </AuLink>
       </td>
       <td>
@@ -54,7 +54,11 @@
         {{detailed-date submission.date}}
       </td>
       <td>
-        <AuButton @skin="primary" @icon="plus">
+        <AuButton
+          @skin='primary'
+          @icon='plus'
+          {{on 'click' (fn this.createAgendapoint submission)}}
+        >
           Creëer agendapunt
         </AuButton>
       </td>
