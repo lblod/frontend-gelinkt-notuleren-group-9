@@ -61,7 +61,11 @@ export default class VerenigingsloketTeBehandelenController extends Controller {
       const today = new Date();
       const difference = start.getTime() - today.getTime();
       let days = Math.round(difference / (1000 * 3600 * 24));
-      return `${days} dagen`;
+      if (days === 1) {
+        return `${days} dag`;
+      } else {
+        return `${days} dagen`;
+      }
     } else {
       return '';
     }
