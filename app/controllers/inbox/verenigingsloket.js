@@ -7,7 +7,7 @@ export default class InboxVerenigingsloketController extends Controller {
   newSubmissionCount = trackedFunction(this, async () => {
     return this.store.count('submission', {
       filter: {
-        ':has-no:editor-document': true,
+        ':has-no:document-container': true,
       },
     });
   });

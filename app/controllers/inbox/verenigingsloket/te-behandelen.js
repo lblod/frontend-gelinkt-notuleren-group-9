@@ -18,7 +18,7 @@ export default class VerenigingsloketTeBehandelenController extends Controller {
   data = trackedFunction(this, async () => {
     return this.store.query('submission', {
       filter: {
-        ':has-no:editor-document': true,
+        ':has-no:document-container': true,
         ...(this.filter && {
           case: {
             event: {

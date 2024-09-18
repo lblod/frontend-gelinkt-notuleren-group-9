@@ -19,7 +19,7 @@ export default class VerenigingsloketTeBehandelenAWVController extends Controlle
     // TODO: adjust this query
     return this.store.query('submission', {
       filter: {
-        ':has-no:editor-document': true,
+        ':has-no:document-container': true,
         ...(this.filter && {
           case: {
             event: {

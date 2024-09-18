@@ -13,4 +13,7 @@ export default class DocumentContainerModel extends Model {
   @hasMany('attachment', { inverse: 'documentContainer', async: true })
   attachments;
   @hasMany('editor-document', { inverse: 'parts', async: true }) isPartOf;
+
+  @hasMany('submission', { inverse: 'documentContainer', async: true })
+  submissions;
 }

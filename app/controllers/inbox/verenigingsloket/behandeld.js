@@ -19,12 +19,10 @@ export default class VerenigingsloketBehandeldController extends Controller {
   data = trackedFunction(this, async () => {
     return this.store.query('submission', {
       filter: {
-        ':has-no:editor-document': false,
-        'editor-document': {
-          'document-container': {
-            status: {
-              ':id:': PUBLISHED_STATUS_ID,
-            },
+        ':has:document-container': true,
+        'document-container': {
+          status: {
+            ':id:': PUBLISHED_STATUS_ID,
           },
         },
         ...(this.filter && {
@@ -40,7 +38,9 @@ export default class VerenigingsloketBehandeldController extends Controller {
         number: this.page,
         size: this.pageSize,
       },
-      include: ['applicant', 'case', 'case.event', 'editor-document'].join(','),
+      include: ['applicant', 'case', 'case.event', 'document-container'].join(
+        ',',
+      ),
     });
   });
 

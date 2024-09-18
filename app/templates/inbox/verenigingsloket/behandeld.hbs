@@ -40,7 +40,7 @@
         @label='Aangemaakt op'
       />
       <AuDataTableThSortable
-        @field=':no-case:editorDocument.title'
+        @field=':no-case:documentContainer.currentVersion.title'
         @currentSorting={{this.sort}}
         @label='Agendapunt'
       />
@@ -59,7 +59,7 @@
       </td>
       <td>
         <AgendaPuntLink
-          @documentContainer={{submission.editorDocument.documentContainer}}
+          @documentContainer={{submission.documentContainer}}
           @readOnly={{false}}
         />
       </td>

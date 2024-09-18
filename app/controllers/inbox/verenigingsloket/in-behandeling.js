@@ -21,12 +21,10 @@ export default class VerenigingsloketInBehandelingController extends Controller 
   data = trackedFunction(this, async () => {
     return this.store.query('submission', {
       filter: {
-        ':has-no:editor-document': false,
-        'editor-document': {
-          'document-container': {
-            status: {
-              ':id:': [DRAFT_STATUS_ID, PLANNED_STATUS_ID].join(','),
-            },
+        ':has:document-container': true,
+        'document-container': {
+          status: {
+            ':id:': [DRAFT_STATUS_ID, PLANNED_STATUS_ID].join(','),
           },
         },
         ...(this.filter && {
@@ -42,7 +40,9 @@ export default class VerenigingsloketInBehandelingController extends Controller 
         number: this.page,
         size: this.pageSize,
       },
-      include: ['applicant', 'case', 'case.event', 'editor-document'].join(','),
+      include: ['applicant', 'case', 'case.event', 'document-container'].join(
+        ',',
+      ),
     });
   });
 

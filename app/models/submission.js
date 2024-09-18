@@ -7,5 +7,6 @@ export default class SubmissionModel extends Model {
   @belongsTo('organization', { async: true }) applicant;
   @belongsTo('case', { inverse: 'submissions', async: true }) case;
   @belongsTo('bestuurseenheid') administrativeUnit;
-  @belongsTo('editor-document') editorDocument;
+  @belongsTo('document-container', { inverse: 'submissions', async: true })
+  documentContainer;
 }
