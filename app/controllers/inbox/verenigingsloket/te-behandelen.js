@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { DRAFT_STATUS_ID } from '../../../utils/constants';
 import { EDITOR_FOLDERS } from 'frontend-gelinkt-notuleren/config/constants';
 import limitContent from '../../../helpers/limit-content';
+import { detailedDate } from '../../../utils/detailed-date';
 const SEARCH_DEBOUNCE_MS = 300;
 
 export default class VerenigingsloketTeBehandelenController extends Controller {
@@ -76,11 +77,16 @@ export default class VerenigingsloketTeBehandelenController extends Controller {
     const besluitUri = `http://data.lblod.info/id/besluiten/${uuidv4()}`;
     const caseResource = await submission.case;
     const event = await caseResource.event;
+    const timeframe = (await event.timeframes).firstObject;
+    const applicant = await submission.applicant;
+    const locations = await event.locations;
+    const locationsHTML = /* html */ `
+      <ul>
+        ${locations.map((location) => `<li>${location.name}</li>`).join('\n')}
+      </ul>
+    `;
     const besluitTitle = `
       Afweging evenement: Inname van het openbaar domein - ${limitContent(event.description, 80)} - Goedkeuring
-    `.trim();
-    const besluitDescription = `
-      Aan het college van burgemeester en schepenen wordt gevraagd: het gebruik van ... - voor de organisatie van ${event.description}
     `.trim();
     const document = /* html */ `
       <div
@@ -108,7 +114,10 @@ export default class VerenigingsloketTeBehandelenController extends Controller {
             datatype="http://www.w3.org/2001/XMLSchema#string"
             lang=""
           >
-            <p>${besluitDescription}</p>
+            <p>Aan het college van burgemeester en schepenen wordt gevraagd: het gebruik van ... - voor de organisatie van ${event.description}.</p>
+            <p>Van ${dateHtml(timeframe.start)} tot ${dateHtml(timeframe.end)}</p>
+            <p>Door ${applicant.name}</p>
+            ${locationsHTML}
           </div>
           <p><br></p>
           <div
@@ -125,7 +134,6 @@ export default class VerenigingsloketTeBehandelenController extends Controller {
         </div>
       </div>
     `;
-
     const container = this.store.createRecord('document-container');
     container.status = await this.store.findRecord('concept', DRAFT_STATUS_ID);
     container.folder = await this.store.findRecord(
@@ -143,4 +151,8 @@ export default class VerenigingsloketTeBehandelenController extends Controller {
     await container.save();
     this.router.transitionTo('agendapoints.edit', container.id);
   }
+}
+
+function dateHtml(date) {
+  return `<span datatype="xsd:dateTime" content="${date.toISOString()}">${detailedDate(date)}</span>`;
 }
