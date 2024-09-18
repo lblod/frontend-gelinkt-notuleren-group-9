@@ -1,10 +1,8 @@
-import { helper } from '@ember/component/helper';
-
-export default helper(function limitContent([text, limit] /*, named*/) {
+export default function limitContent(text, limit) {
   if (!text) return '';
   if (text.length < limit) {
     return text;
   } else {
     return text.slice(0, limit) + '...';
   }
-});
+}
