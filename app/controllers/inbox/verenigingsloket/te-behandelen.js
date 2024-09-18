@@ -114,10 +114,11 @@ export default class VerenigingsloketTeBehandelenController extends Controller {
             datatype="http://www.w3.org/2001/XMLSchema#string"
             lang=""
           >
-            <p>Aan het college van burgemeester en schepenen wordt gevraagd: het gebruik van ... - voor de organisatie van ${event.description}.</p>
+            <p>Aan het college van burgemeester en schepenen wordt gevraagd: het gebruik van:</p>
+            ${locationsHTML}
+            <p>Voor de organisatie van ${event.description}.</p>
             <p>Van ${dateHtml(timeframe.start)} tot ${dateHtml(timeframe.end)}</p>
             <p>Door ${applicant.name}</p>
-            ${locationsHTML}
           </div>
           <p><br></p>
           <div
